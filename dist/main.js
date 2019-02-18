@@ -9875,9 +9875,10 @@ function myPluginCommand(selection, root) {
     findText(elm.children, list);
   });
   list.sort();
-  console.log(list.join("\n"));
+  let noDupList = list.filter((x, i, self) => self.indexOf(x) === i);
+  console.log(noDupList.join("\n"));
   console.log("=== display end ===");
-  const dialog = createDialog(list.join("\n"));
+  const dialog = createDialog(noDupList.join("\n"));
   const result = dialog.showModal();
 }
 
