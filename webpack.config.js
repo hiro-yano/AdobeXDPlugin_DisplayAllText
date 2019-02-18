@@ -1,3 +1,4 @@
+const {VueLoaderPlugin} = require('vue-loader');
 
 module.exports = {
   // モード値を production に設定すると最適化された状態で、
@@ -21,6 +22,26 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          // CSSをバンドルするための機能
+          {
+            loader: 'css-loader',
+            options: {
+              // オプションでCSS内のurl(画像)メソッドを取り込む
+              url: true,
+            },
+          },
+
+        ],
+      },
+      // .vue ファイルを取り込む
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+      },
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -51,10 +72,24 @@ module.exports = {
     ],
   },
   // ランタイムで使用するXDパッケージ
-  externals: {
+  externals: 
     // webpack に実行時モジュールだと認識させる必要がある
-    uxp: 'uxp',
-    scenegraph: 'scenegraph',
-    commands: 'commands',
-  },
+    [
+    {
+      uxp: 'uxp',
+      scenegraph: 'scenegraph',
+      commands: 'commands'
+    },
+    {
+      uxp: 'uxp',
+      clipboard: 'clipboard',
+      commands: 'commands'
+    }
+      
+    ]
+  ,
+  plugins: [
+    // Vueを読み込めるようにするため
+    new VueLoaderPlugin(),
+  ],
 };
